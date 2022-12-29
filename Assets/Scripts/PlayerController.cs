@@ -19,13 +19,13 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void RotateCamera()
+    void PlayerRotate()
     {
         cameraRotateX += Input.GetAxis("Mouse X");
-        cameraRotateX = Mathf.Clamp(cameraRotateX, -45, 45);
         cameraRotateY -= Input.GetAxis("Mouse Y");
         cameraRotateY = Mathf.Clamp(cameraRotateY, -45, 45);
         mainCamera.transform.eulerAngles = new Vector3(cameraRotateY, cameraRotateX, 0);
+        gameObject.transform.eulerAngles = new Vector3(0, cameraRotateX, 0);
     }
 
     void Movement()
@@ -35,7 +35,22 @@ public class PlayerController : MonoBehaviour
         bool isWalking = movement.x != 0 || movement.z != 0;
         if (isWalking)
         {
-            transform.position += movement * Time.deltaTime * movingSpeed;
+            if(movement.x > 0)
+            {
+                transform.Translate(Vector3.right * movingSpeed * Time.deltaTime);
+            }
+            else if(movement.x < 0)
+            {
+                transform.Translate(Vector3.left * movingSpeed * Time.deltaTime);
+            }
+            if(movement.z > 0)
+            {
+                transform.Translate(Vector3.forward * movingSpeed * Time.deltaTime);
+            }
+            else if(movement.z < 0)
+            {
+                transform.Translate(Vector3.back * movingSpeed * Time.deltaTime);
+            }
             animator.SetBool("IsWalking", isWalking);
         }
     }
@@ -43,7 +58,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RotateCamera();
+        PlayerRotate();
 
         Movement();
         

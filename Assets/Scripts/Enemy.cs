@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NPCController : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     [SerializeField] private GameObject textBox;
     [SerializeField] private Text dialogueText;
-    [SerializeField] private Text nameText;
     [SerializeField] NPCDialogueScriptableObject npcDialogue;
     private int currentText = 0;
     private Animator animator;
@@ -43,7 +42,6 @@ public class NPCController : MonoBehaviour
         {
             HideUI();
             currentText = 0;
-            nameText.text = "";
             isTalk = false;
         }
     }
@@ -54,7 +52,6 @@ public class NPCController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                nameText.text = npcDialogue.npcName + ":";
                 dialogueText.text = npcDialogue.dialogue[currentText];
                 currentText++;
             }
@@ -64,7 +61,6 @@ public class NPCController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 HideUI();
-                nameText.text = "";
             }
         }
     }
