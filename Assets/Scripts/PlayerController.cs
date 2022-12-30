@@ -55,12 +55,33 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Conversation()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Collider[] others = Physics.OverlapSphere(transform.position, 2);
+            foreach (Collider enemy in others)
+            {
+                if (enemy.TryGetComponent(out Enemy enemyDialogue))
+                {
+                    print("Enemy");
+                    enemyDialogue.StartConversation();
+                    //enemyDialogue.StartConversation();
+                    //enemyDialogue.ContinueConversation();
+                    //enemyDialogue.EndConversation();
+                }
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         PlayerRotate();
 
         Movement();
+
+        Conversation();
         
         if (Input.GetKeyDown(KeyCode.C))
         {

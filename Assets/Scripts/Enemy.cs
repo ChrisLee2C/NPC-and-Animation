@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private Camera UICamera;
     [SerializeField] private GameObject textBox;
     [SerializeField] private Text dialogueText;
     [SerializeField] NPCDialogueScriptableObject npcDialogue;
@@ -18,32 +19,36 @@ public class Enemy : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void StartConversation()
     {
-        if (other.GetComponent<PlayerController>() != null)
+        dialogueText.text = "Press Spacebar to Start Conversation";
+        ShowUI();
+        AttachCamera();
+    }
+
+    public void ContinueConversation()
+    {
+        isTalk = true;
+    }
+
+    public void EndConversation()
+    {
+        HideUI();
+        currentText = 0;
+        isTalk = false;
+    }
+
+    private void AttachCamera()
+    {
+        if (gameObject.GetComponentInChildren<Camera>() == null)
         {
-            dialogueText.text = "Press Spacebar to Start Conversation";
-            ShowUI();
-            Dance();
+            Instantiate(UICamera, new Vector3(0, 0, -2), Quaternion.identity, gameObject.transform);
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void DetachCamera()
     {
-        if (other.GetComponent<PlayerController>() != null)
-        {
-            isTalk = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponent<PlayerController>() != null)
-        {
-            HideUI();
-            currentText = 0;
-            isTalk = false;
-        }
+        Destroy(GetComponentInChildren<Camera>().gameObject);
     }
 
     public void ShowDialogue()
@@ -52,6 +57,10 @@ public class Enemy : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                if (npcDialogue.dialogue[currentText].Contains("Kill"))
+                {
+                    Attack();
+                }
                 dialogueText.text = npcDialogue.dialogue[currentText];
                 currentText++;
             }
@@ -61,8 +70,20 @@ public class Enemy : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 HideUI();
+                Die();
+                DetachCamera();
             }
         }
+    }
+
+    private void Die()
+    {
+        animator.SetTrigger("Die");
+    }
+
+    private void Attack()
+    {
+        animator.SetTrigger("Attack");
     }
 
     public void ShowUI()
@@ -75,16 +96,9 @@ public class Enemy : MonoBehaviour
         textBox.gameObject.SetActive(false);
     }
 
-    public void Dance()
-    {
-        animator.SetTrigger("Capoeira");
-    }
-
     // Update is called once per frame
     void Update()
     {
-        //    bool isWalking = Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0;
-        //    animator.SetBool("IsWalking", isWalking);
         if (isTalk)
         {
             ShowDialogue();
