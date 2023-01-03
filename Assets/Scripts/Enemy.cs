@@ -1,107 +1,72 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private Camera UICamera;
-    [SerializeField] private GameObject textBox;
-    [SerializeField] private Text dialogueText;
-    [SerializeField] NPCDialogueScriptableObject npcDialogue;
-    private int currentText = 0;
+    [HideInInspector] public bool isDead = false;
+    [SerializeField] private PlayerInteract playerInteract;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private EnemyUI enemyUI;
     private Animator animator;
-    private bool isTalk = false;
+    private bool isAttack = false;
 
     // Start is called before the first frame update
-    void Awake()
-    {
-        animator = gameObject.GetComponent<Animator>();
-    }
+    void Awake() { animator = gameObject.GetComponent<Animator>(); }
 
     public void StartConversation()
     {
-        dialogueText.text = "Press Spacebar to Start Conversation";
-        ShowUI();
-        AttachCamera();
-    }
-
-    public void ContinueConversation()
-    {
-        isTalk = true;
-    }
-
-    public void EndConversation()
-    {
-        HideUI();
-        currentText = 0;
-        isTalk = false;
-    }
-
-    private void AttachCamera()
-    {
-        if (gameObject.GetComponentInChildren<Camera>() == null)
+        if(isDead != true)
         {
-            Instantiate(UICamera, new Vector3(0, 0, -2), Quaternion.identity, gameObject.transform);
+            enemyUI.ShowUI();
+            enemyUI.AttachCamera();
         }
     }
 
-    private void DetachCamera()
-    {
-        Destroy(GetComponentInChildren<Camera>().gameObject);
+    public void ContinueConversation() { enemyUI.ShowDialogue(); }
+
+    public IEnumerator EndConversation() 
+    { 
+        playerController.isTalking = false;
+        isDead = true;
+        Die();
+        yield return new WaitForSeconds(4);
+        animator.SetTrigger("Respawn");
+        yield return new WaitForSeconds(3);
+        isDead = false;
     }
 
-    public void ShowDialogue()
+    public IEnumerator Attack() 
+    { 
+        animator.SetTrigger("Attack");
+        isAttack = true;
+        yield return new WaitForSeconds(3);
+        isAttack = false;
+    }
+    public void Die() { animator.SetTrigger("Die"); }
+
+    private void CheckPlayerNearby()
     {
-        if (currentText < npcDialogue.dialogue.Length)
+        if (playerInteract.GetEnemy() != null && isDead != true)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                if (npcDialogue.dialogue[currentText].Contains("Kill"))
-                {
-                    Attack();
-                }
-                dialogueText.text = npcDialogue.dialogue[currentText];
-                currentText++;
-            }
+            enemyUI.ShowPrompt();
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                HideUI();
-                Die();
-                DetachCamera();
-            }
+            enemyUI.HidePrompt();
         }
     }
 
-    private void Die()
+    private void Update()
     {
-        animator.SetTrigger("Die");
-    }
+        CheckPlayerNearby();
 
-    private void Attack()
-    {
-        animator.SetTrigger("Attack");
-    }
-
-    public void ShowUI()
-    {
-        textBox.gameObject.SetActive(true);
-    }
-
-    public void HideUI()
-    {
-        textBox.gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (isTalk)
+        if(playerController.isTalking == true && isAttack != true)
         {
-            ShowDialogue();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ContinueConversation();
+            }
         }
     }
 }

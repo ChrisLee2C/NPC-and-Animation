@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Ghoul Boss
   dialogue:
-  - I'm immortal!!
+  - I'm Immortal!!
   - I'll Kill You!!!
   - Noooooo!

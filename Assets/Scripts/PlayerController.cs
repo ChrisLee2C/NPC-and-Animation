@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [HideInInspector] public bool isTalking = false;
     [SerializeField] private float movingSpeed;
     [SerializeField] private float turningSpeed;
     private float cameraRotateX;
@@ -35,57 +36,28 @@ public class PlayerController : MonoBehaviour
         bool isWalking = movement.x != 0 || movement.z != 0;
         if (isWalking)
         {
-            if(movement.x > 0)
-            {
-                transform.Translate(Vector3.right * movingSpeed * Time.deltaTime);
-            }
-            else if(movement.x < 0)
-            {
-                transform.Translate(Vector3.left * movingSpeed * Time.deltaTime);
-            }
-            if(movement.z > 0)
-            {
-                transform.Translate(Vector3.forward * movingSpeed * Time.deltaTime);
-            }
-            else if(movement.z < 0)
-            {
-                transform.Translate(Vector3.back * movingSpeed * Time.deltaTime);
-            }
+            transform.Translate(movement * movingSpeed * Time.deltaTime);
             animator.SetBool("IsWalking", isWalking);
         }
-    }
-
-    private void Conversation()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+        else
         {
-            Collider[] others = Physics.OverlapSphere(transform.position, 2);
-            foreach (Collider enemy in others)
-            {
-                if (enemy.TryGetComponent(out Enemy enemyDialogue))
-                {
-                    print("Enemy");
-                    enemyDialogue.StartConversation();
-                    //enemyDialogue.StartConversation();
-                    //enemyDialogue.ContinueConversation();
-                    //enemyDialogue.EndConversation();
-                }
-            }
+            animator.SetBool("IsWalking", isWalking);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        PlayerRotate();
-
-        Movement();
-
-        Conversation();
-        
-        if (Input.GetKeyDown(KeyCode.C))
+        if(isTalking != true)
         {
-            animator.SetTrigger("Capoeira");
+            Movement();
+
+            PlayerRotate();
+
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                animator.SetTrigger("Capoeira");
+            }
         }
     }
 }
