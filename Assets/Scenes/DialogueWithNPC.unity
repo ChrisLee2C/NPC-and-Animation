@@ -723,7 +723,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &704444161
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3144,13 +3144,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textBox: {fileID: 1710024148}
   prompt: {fileID: 1195153865}
-  promptText: {fileID: 144114754}
+  uICameraSpawnPoint: {fileID: 1737044157}
   dialogueText: {fileID: 704444160}
   uICamera: {fileID: 3222361699206721677, guid: 1cc750c425397d34db7ce16d22bd843b, type: 3}
-  uICameraSpawnPoint: {fileID: 1737044157}
-  timePerCharacter: 1
   npcDialogue: {fileID: 11400000, guid: dfbc4392e10647544a2a4de7cb8b41e4, type: 2}
   enemy: {fileID: 471970895}
+  currentText: 0
+  timePerCharacter: 0.1
+  timer: 1
+  characterIndex: 1
+  promptText: {fileID: 144114754}
+  isWriting: 0
 --- !u!114 &1505794985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3263,7 +3267,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &1530392795
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3588,7 +3592,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &1844233982
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -54,10 +54,7 @@ public class PlayerController : MonoBehaviour
 
             PlayerRotate();
 
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                animator.SetTrigger("Capoeira");
-            }
+            if (Input.GetKeyDown(KeyCode.C)) { animator.SetTrigger("Capoeira"); }
         }
     }
 }

@@ -35,8 +35,8 @@ public class PlayerInteract : MonoBehaviour
                 {
                     if(enemy.isDead != true)
                     {
-                        playerController.isTalking = true;
                         enemy.StartConversation();
+                        playerController.isTalking = true;
                     }
                 }
             }

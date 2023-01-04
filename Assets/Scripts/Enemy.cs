@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
         {
             enemyUI.ShowUI();
             enemyUI.AttachCamera();
+            enemyUI.promptText.text = "Press Spacebar to Continue the Conversation";
+            enemyUI.isWriting = true;
         }
     }
 

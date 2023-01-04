@@ -7,17 +7,18 @@ public class EnemyUI : MonoBehaviour
 {
     [SerializeField] private GameObject textBox;
     [SerializeField] private GameObject prompt;
-    [SerializeField] private Text promptText;
+    [SerializeField] private GameObject uICameraSpawnPoint;
     [SerializeField] private Text dialogueText;
     [SerializeField] private Camera uICamera;
-    [SerializeField] private GameObject uICameraSpawnPoint;
+    [SerializeField] private NPCDialogueScriptableObject npcDialogue;
+    [SerializeField] private Enemy enemy;
+    [SerializeField] private int currentText = 0;
     [SerializeField] private float timePerCharacter = 0.1f;
-    [SerializeField] NPCDialogueScriptableObject npcDialogue;
-    [SerializeField] Enemy enemy;
+    [SerializeField] private float timer = 1;
+    [SerializeField] private int characterIndex = 0;
     private Camera uiCameraPrefab;
-    private int currentText = 0;
-    private int characterIndex = 0;
-    private float timer = 1;
+    public Text promptText;
+    public bool isWriting = false;
 
     public void ShowDialogue()
     {
@@ -27,9 +28,8 @@ public class EnemyUI : MonoBehaviour
             {
                 StartCoroutine(enemy.Attack());
             }
-            dialogueText.text = npcDialogue.dialogue[currentText];
             promptText.text = "Press Spacebar to Continue the Conversation";
-            currentText++;
+            isWriting = true;
         }
         else
         {
@@ -38,27 +38,32 @@ public class EnemyUI : MonoBehaviour
             promptText.text = "Press Spacebar to Start the Conversation";
             HideUI();
             DetachCamera();
+            dialogueText.text = "";
         }
         
     }
 
     private void Update()
     {
-        //WritingEffect(npcDialogue.dialogue[currentText]);
+        if (isWriting)
+        {
+            WritingEffect();
+        }
     }
 
-    private void WritingEffect(string textTobeWritten)
+    private void WritingEffect()
     {
         timer -= Time.deltaTime;
-        if (timer <= 0f)
+        while (timer <= 0f)
         {
             timer += timePerCharacter;
+            dialogueText.text = npcDialogue.dialogue[currentText].Substring(0, characterIndex);
             characterIndex++;
-            dialogueText.text = textTobeWritten.Substring(0, characterIndex);
-            if (characterIndex > textTobeWritten.Length)
+            if (characterIndex > npcDialogue.dialogue[currentText].Length)
             {
-                characterIndex = 0;
-                return;
+                characterIndex = 0; 
+                currentText++;
+                isWriting = false;
             }
         }
     }
