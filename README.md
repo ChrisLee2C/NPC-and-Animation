@@ -8,6 +8,8 @@ Show dialogue in two approaches:
 2. Canvas in Screen Space - Overlay
     * With Camera Render Texture 
 ---
+NPC walks with NavMeshAgent
+---
 Read dialogue with Scriptable Objects
 ---
 NPC also play animations imported from mixamo
