@@ -45,10 +45,7 @@ public class EnemyUI : MonoBehaviour
 
     private void Update()
     {
-        if (isWriting)
-        {
-            WritingEffect();
-        }
+        if (isWriting) { WritingEffect(); }
     }
 
     private void WritingEffect()

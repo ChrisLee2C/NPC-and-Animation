@@ -9,6 +9,7 @@ public class NPCController : MonoBehaviour
     [SerializeField] private GameObject textBox;
     [SerializeField] private Text dialogueText;
     [SerializeField] private Text nameText;
+    [SerializeField] private Text overHeadNameText;
     [SerializeField] private List<Transform> wayPoints;
     [SerializeField] NPCDialogueScriptableObject npcDialogue;
     private NavMeshAgent navMeshAgent;
@@ -24,6 +25,7 @@ public class NPCController : MonoBehaviour
         currentDestination = Random.Range(0, wayPoints.Capacity);
         navMeshAgent.destination = new Vector3(wayPoints[currentDestination].position.x, wayPoints[currentDestination].position.y, wayPoints[currentDestination].position.z);
         animator.SetBool("IsWalking", true);
+        overHeadNameText.text = npcDialogue.npcName;
     }
 
     private void OnTriggerEnter(Collider other)
