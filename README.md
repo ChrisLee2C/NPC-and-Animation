@@ -12,4 +12,8 @@ NPC walks with NavMeshAgent
 ---
 Read dialogue with Scriptable Objects
 ---
-NPC also play animations imported from mixamo
+NPC also plays animations imported from mixamo
+---
+Player can equip and use the item
+---
+Player can interact with object
