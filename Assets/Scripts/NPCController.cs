@@ -97,12 +97,12 @@ public class NPCController : MonoBehaviour
     {
         if(isTalk != true)
         {
-            Patrol(wayPoints[currentDestination], true);
+            Patrol(wayPoints[currentDestination], !isTalk);
         }
         else
         {
             ShowDialogue();
-            Patrol(transform, false);
+            Patrol(transform, isTalk);
         }
     }
 }
