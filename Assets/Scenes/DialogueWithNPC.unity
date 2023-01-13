@@ -4681,7 +4681,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equipPosition: {fileID: 1352876422}
-  flashlightPrefab: {fileID: 1002705123656268, guid: d86ca2f4159e6a942abd8dfc52b38395, type: 3}
 --- !u!1 &944971056
 GameObject:
   m_ObjectHideFlags: 0

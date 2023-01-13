@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class Flashlight : MonoBehaviour
 {
-    public bool isEquip = false;
     [SerializeField] GameObject uiCanvas;
     private Animator animator;
     private bool isPlayer = false;
 
-    //Start is called before the first frame update
-    void Awake()
-    {
-        animator = GetComponent<Animator>();
-        if (gameObject.transform.parent) { isEquip = true; }
-    }
+    void Awake() => animator = GetComponent<Animator>();
 
     void CheckPlayer()
     {
@@ -33,24 +27,12 @@ public class Flashlight : MonoBehaviour
 
     void HideUI() { uiCanvas.SetActive(false); }
 
-    public void Blink()
-    {
-        if (isEquip == true) { animator.SetTrigger("Blink"); }
-    }
-
-    public void Equip(Transform equipPosition)
-    {
-        gameObject.transform.SetParent(equipPosition);
-        gameObject.transform.localPosition = equipPosition.localPosition;
-        gameObject.transform.localEulerAngles = new Vector3(0, 0, 90);
-        gameObject.transform.localScale = equipPosition.localScale;
-        isEquip = true;
-    }
+    public void Blink() => animator.SetTrigger("Blink"); 
 
     private void Update()
     {
         CheckPlayer();
 
-        if (isEquip != true && isPlayer == true) { ShowUI(); } else { HideUI(); }
+        if (isPlayer == true) { ShowUI(); } else { HideUI(); }
     }
 }

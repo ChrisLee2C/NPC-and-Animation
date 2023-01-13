@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerInteract : MonoBehaviour
 {
     [SerializeField] GameObject equipPosition;
-    [SerializeField] GameObject flashlightPrefab;
     PlayerController playerController;
+    private bool isEquip = false;
 
     private void Awake() { playerController = GetComponent<PlayerController>(); }
 
@@ -44,14 +44,23 @@ public class PlayerInteract : MonoBehaviour
         Flashlight flashlight = gameObject.GetComponentInChildren<Flashlight>();
         if (flashlight != null) { flashlight.Blink(); }
     }
+
+
     void EquipItem()
     {
         Collider[] others = Physics.OverlapSphere(transform.position, 2);
         foreach (Collider item in others)
         {
-            if (item.TryGetComponent(out Flashlight flashlight))
+            if (item.TryGetComponent(out Flashlight flashlight)) 
             {
-                if(flashlight.isEquip == false) { flashlight.Equip(equipPosition.transform); }
+                if (isEquip == false)
+                {
+                    flashlight.transform.SetParent(equipPosition.transform);
+                    flashlight.transform.localPosition = equipPosition.transform.localPosition;
+                    flashlight.transform.localEulerAngles = new Vector3(0, 0, 90);
+                    flashlight.transform.localScale = equipPosition.transform.localScale;
+                    isEquip = true;
+                }
             }
         }
     }
