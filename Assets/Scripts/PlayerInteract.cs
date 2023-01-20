@@ -59,6 +59,7 @@ public class PlayerInteract : MonoBehaviour
                     flashlight.transform.localPosition = equipPosition.transform.localPosition;
                     flashlight.transform.localEulerAngles = new Vector3(0, 0, 90);
                     flashlight.transform.localScale = equipPosition.transform.localScale;
+                    flashlight.Equip();
                     isEquip = true;
                 }
             }

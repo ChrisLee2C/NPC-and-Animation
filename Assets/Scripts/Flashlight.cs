@@ -7,9 +7,11 @@ public class Flashlight : MonoBehaviour
     [SerializeField] GameObject uiCanvas;
     private Animator animator;
     private bool isPlayer = false;
+    private bool isEquip = false;
 
     void Awake() => animator = GetComponent<Animator>();
 
+    public void Equip() => isEquip = true;
     void CheckPlayer()
     {
         RaycastHit hit;
@@ -33,6 +35,6 @@ public class Flashlight : MonoBehaviour
     {
         CheckPlayer();
 
-        if (isPlayer == true) { ShowUI(); } else { HideUI(); }
+        if (isPlayer == true && isEquip == true) { ShowUI(); } else { HideUI(); }
     }
 }
