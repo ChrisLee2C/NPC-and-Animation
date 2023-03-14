@@ -11,7 +11,7 @@ public class ThirdPersonPlayerController : MonoBehaviour
     private Animator animator;
     private Vector3 movement;
     private Quaternion rotation;
-    private Rigidbody rigidbody;
+    private Rigidbody rb;
 
     // Start is called before the first frame update
     void Awake()
@@ -19,14 +19,14 @@ public class ThirdPersonPlayerController : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         rotation = Quaternion.identity;
-        rigidbody = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
     void PlayerRotate()
     {
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, movement, turningSpeed * Time.deltaTime, 0f); 
         rotation = Quaternion.LookRotation(desiredForward);
-        rigidbody.MoveRotation(rotation);
+        rb.MoveRotation(rotation);
     }
 
     void Movement()
@@ -36,7 +36,7 @@ public class ThirdPersonPlayerController : MonoBehaviour
         bool isWalking = movement.x != 0 || movement.z != 0;
         if (isWalking)
         {
-            transform.Translate(movement * movingSpeed * speedModifier * Time.deltaTime);
+            transform.Translate(movement.magnitude*Camera.main.transform.forward * movingSpeed * speedModifier * Time.deltaTime);
             animator.SetBool("IsWalking", isWalking);
         }
         else

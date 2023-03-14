@@ -42,7 +42,11 @@ public class PlayerInteract : MonoBehaviour
     void UseFlashLight()
     {
         Flashlight flashlight = gameObject.GetComponentInChildren<Flashlight>();
-        if (flashlight != null) { flashlight.Blink(); }
+        if (flashlight != null) 
+        { 
+            flashlight.Blink(); 
+
+        }
     }
 
 
